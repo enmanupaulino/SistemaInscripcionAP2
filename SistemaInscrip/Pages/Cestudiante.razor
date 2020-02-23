@@ -1,0 +1,14 @@
+﻿@page "/ConEstudiante"
+@using SistemaInscrip.Controllers
+@using SistemaInscrip.Models
+
+<h3>Component2</h3>
+
+@code {
+    public List<Estudiantes> lista;
+    protected override void OnInitialized()
+    {
+        EstudianteControllers estudianteControllers = new EstudianteControllers();
+        lista = estudianteControllers.GetEstudiantes(e => true);
+    }
+}
