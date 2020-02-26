@@ -4,6 +4,30 @@
 
 <h3>Component2</h3>
 
+<table class=" table">
+    <thead>
+        <tr>
+            <th>Estudiante Id</th>
+            <th>Nombre</th>
+            <th>Matricula</th>
+            <th>Balance</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in lista)
+        {
+            <tr>
+                <th>@item.EstudianteId</th>
+                <th>@item.Nombres</th>
+                <th>@item.Matricula</th>
+                <th>@item.Balance</th>
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
 @code {
     public List<Estudiantes> lista;
     protected override void OnInitialized()

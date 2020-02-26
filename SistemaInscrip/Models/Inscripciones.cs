@@ -6,21 +6,27 @@ using System.Threading.Tasks;
 
 namespace SistemaInscrip.Models
 {
-    public class Inscripcion
+    public class Inscripciones
     {
         [Key]
 
         public int InscripcionId { get; set; }
+        [Required(ErrorMessage ="Debe de tener un semestre")]
         public string Semestre { get; set; }
+        [Required(ErrorMessage ="Debe de haber un limite")]
         public int  Limite { get; set; }
+        [Required(ErrorMessage ="Debe de haber un Monto")]
         public int Tomado { get; set; }
         public int Disponible { get; set; }
         public DateTime  Fecha { get; set; }
+        [Required(ErrorMessage ="Debe de tener algun balance")]
         public int Balance { get; set; }
+        [Required(ErrorMessage = "Debe de haber un Monto")]
         public int Monto { get; set; }
+        [Required(ErrorMessage = "Debe de un Id")]
         public int EstudianteId { get; set; }
 
-        public Inscripcion()
+        public Inscripciones()
         {
             InscripcionId = 0;
             Semestre = string.Empty;

@@ -10,8 +10,11 @@ namespace SistemaInscrip.Models
     {
         [Key]
         public int EstudianteId { get; set; }
+        [Required(ErrorMessage = "Debe de haber una Matricula")]
         public int Matricula { get; set; }
+        [Required(ErrorMessage = "Debe de tener un nombre")]
         public string Nombres { get; set; }
+        [Required(ErrorMessage = "Debe de haber un Balance")]
         public decimal Balance { get; set; }
 
         public Estudiantes()

@@ -12,11 +12,11 @@ namespace SistemaInscrip.Data
         public DbSet<Asignaturas> asignaturas { set; get; }
         public DbSet<Estudiantes> estudiantes { get; set; }
         public DbSet<Pago> pagos { get; set; }
-        public DbSet<Inscripcion> inscripcions { get; set; }
+        public DbSet<Inscripciones> inscripciones { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(@" Data Source=Database/Incripcion.db");
+            optionsBuilder.UseSqlite(@" Data Source=Database/SI.Incripciones.db");
         }
 
     }

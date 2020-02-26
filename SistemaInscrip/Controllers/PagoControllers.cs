@@ -1,4 +1,5 @@
-﻿using SistemaInscrip.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SistemaInscrip.Data;
 using SistemaInscrip.Models;
 using System;
 using System.Collections.Generic;
@@ -36,12 +37,11 @@ namespace SistemaInscrip.Controllers
         {
             bool paso = false;
             Contexto db = new Contexto();
-
-            db.pagos.Add(pago);
-            db.Entry(pago).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            db.pagos.Add(pago).State = EntityState.Modified;
             paso = db.SaveChanges() > 0;
+
             return paso;
-            
+
         }
         public bool Eliminar(int Id)
         {

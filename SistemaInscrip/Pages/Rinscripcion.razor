@@ -1,6 +1,142 @@
 ﻿@page "/Inscripcion"
+@using SistemaInscrip.Models
+@using SistemaInscrip.Controllers
 <h3>Rinscripcion</h3>
 
+<EditForm Model="@inscripcion" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+
+
+    <div class=" form-group">
+        <label for=" InscripcionId">Id</label>
+        <InputNumber @bind-Value="inscripcion.InscripcionId"></InputNumber>
+        <button type="button" class=" btn btn-primary " @onclick="Buscar">Buscar</button>
+        <ValidationMessage For="@(()=>inscripcion.InscripcionId)" />
+
+    </div>
+    <div class="form-group">
+        <label for=" Semestre">Semestre</label>
+        <InputText @bind-Value="inscripcion.Semestre" class="form-group" />
+        <ValidationMessage For="@(()=>inscripcion.Semestre)" />
+    </div>
+
+
+    <div class="form-group">
+        <label for=" Limite">Limite</label>
+        <InputNumber @bind-Value="inscripcion.Limite" class="form-group"></InputNumber>
+        <ValidationMessage For="@(()=>inscripcion.Limite)" />
+    </div>
+
+    <div class="form-group">
+        <label for="Tomados">Tomados</label>
+        <InputNumber @bind-Value="inscripcion.Tomado" class="form-group"></InputNumber>
+        <ValidationMessage For="@(()=>inscripcion.Tomado)" />
+    </div>
+
+
+
+    <div class="form-group">
+        <label for="Dispobible">Disponible</label>
+        <InputNumber @bind-Value="inscripcion.Disponible"  class="form-group" />
+        <ValidationMessage For="@(()=>inscripcion.Disponible)" />
+    </div>
+    <div class="form-group">
+        <label for="Balance">Balance</label>
+        <InputNumber @bind-Value="inscripcion.Balance"  class="form-group" />
+        <ValidationMessage For="@(()=>inscripcion.Balance)" />
+    </div>
+
+
+    <div class="form-group">
+        <label for="EstudianteId">EstudianteId</label>
+        <InputNumber @bind-Value="inscripcion.EstudianteId"  class="form-group" />
+        <ValidationMessage For="@(()=>inscripcion.EstudianteId)" />
+    </div>
+    <div class="form-group">
+        <label for="Fecha">Fecha</label>
+        <InputDate @bind-Value="inscripcion.Fecha"  class="form-group" />
+        <ValidationMessage For="@(()=>inscripcion.Fecha)" />
+    </div>
+
+    <div class="form-group">
+
+        <button type="submit" class="btn btn-primary"> Guardar</button>
+        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+        <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
+    </div>
+
+    <h5>@Mensaje</h5>
+
+
+
+
+</EditForm>
+
+
+
 @code {
+    public Inscripciones inscripcion = new Inscripciones();
+    public string Mensaje;
+
+    public void Guardar()
+    {
+        InscripcionControllers inscripcionControllers = new InscripcionControllers();
+        if (inscripcionControllers.Guardar(inscripcion)){
+            this.inscripcion = new Inscripciones();
+            Mensaje = "Inscripcion Guardad";
+
+        }
+        else
+        {
+            this.inscripcion = new Inscripciones();
+            Mensaje = "error Guardad";
+        }
+    }
+    public void Limpiar()
+    {
+        this.inscripcion = new Inscripciones();
+    }
+
+    public void Buscar()
+    {
+        InscripcionControllers inscripcionControllers = new InscripcionControllers();
+
+        var inscripciones = inscripcionControllers.Buscar(inscripcion.InscripcionId);
+
+
+        if (inscripcion != null)
+        {
+            inscripcion = inscripciones;
+            Mensaje = "inscripcion encontrada";
+        }
+        else
+        {
+            this.inscripcion = new Inscripciones();
+            Mensaje = "Error";
+        }
+
+
+
+    }
+    public void Eliminar()
+    {
+        InscripcionControllers inscripcionControllers = new InscripcionControllers();
+
+        var Inscripcion = inscripcionControllers.Eliminar(inscripcion.InscripcionId);
+        if (inscripcion != null)
+        {
+            if (inscripcionControllers.Eliminar(inscripcion.InscripcionId))
+            {
+                this.inscripcion = new Inscripciones();
+                Mensaje = "inscripcionEliminada";
+            }
+            else
+            {
+                this.inscripcion = new Inscripciones();
+                Mensaje = "Error";
+            }
+        }
+
+    }
 
 }

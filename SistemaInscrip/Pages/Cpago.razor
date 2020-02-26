@@ -1,6 +1,36 @@
 ﻿@page "/ConPago"
+@using SistemaInscrip.Controllers
+@using SistemaInscrip.Models
 <h3>Component</h3>
+<table class=" table">
+    <thead>
+        <tr>
+            <th>PagoId</th>
+            <th>Fecha</th>
+            <th>InscripcionId</th>
+            <th>Monto</th>
+        </tr>
+
+
+    </thead>
+    <tbody>
+           @foreach (var item in lista)
+           {<tr>
+         <th>@item.PagoId</th>
+         <th>@item.Fecha</th>
+         <th>@item.InscripcionId</th>
+          <th>@item.Monto</th>
+        </tr>
+             }
+    </tbody>
+</table>
 
 @code {
+    public List<Pago> lista;
+    protected override void OnInitialized()
+    {
+        PagoControllers pagoControllers = new PagoControllers();
+        lista = pagoControllers.GetEstudiantes(e => true);
+    }
 
 }

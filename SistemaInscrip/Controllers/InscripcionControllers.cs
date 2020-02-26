@@ -10,25 +10,37 @@ namespace SistemaInscrip.Controllers
 {
     public class InscripcionControllers
     {
-
-      public bool Insertar(Inscripcion inscripcion)
+        public bool Guardar (Inscripciones inscripciones)
+        {
+            bool paso = false;
+            Contexto db = new Contexto();
+            if (inscripciones.InscripcionId == 0)
+            {
+                paso = Insertar(inscripciones);
+            }else
+            {
+                paso = Modificar(inscripciones);
+            }
+            return paso;
+        }
+      public bool Insertar(Inscripciones inscripciones)
         {
             Contexto db = new Contexto();
             bool paso = false;
 
-            db.inscripcions.Add(inscripcion);
+            db.inscripciones.Add(inscripciones);
             paso = db.SaveChanges() > 0;
 
 
             return paso;
 
         }
-        public bool Modificar(Inscripcion inscripcion)
+        public bool Modificar(Inscripciones inscripcion)
         {
             bool paso = false;
             Contexto db = new Contexto();
 
-            db.inscripcions.Add(inscripcion);
+            db.inscripciones.Add(inscripcion);
             db.Entry(inscripcion).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             paso = db.SaveChanges() > 0;
 
@@ -39,28 +51,28 @@ namespace SistemaInscrip.Controllers
         {
             bool paso = false;
             Contexto db = new Contexto();
-            Inscripcion inscripcion = new Inscripcion();
-            inscripcion = db.inscripcions.Find(Id);
+            Inscripciones inscripcion = new Inscripciones();
+            inscripcion = db.inscripciones.Find(Id);
             db.Entry(inscripcion).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
             paso = db.SaveChanges() > 0;
 
 
             return paso;
         }
-        public Inscripcion Buscar(int Id)
+        public Inscripciones Buscar(int Id)
         {
             Contexto db = new Contexto();
-            Inscripcion inscripcion = new Inscripcion();
+            Inscripciones inscripcion = new Inscripciones();
 
-            inscripcion = db.inscripcions.Find(Id);
+            inscripcion = db.inscripciones.Find(Id);
 
             return inscripcion;
         }
-        public List<Inscripcion> GetInscripcions(Expression<Func<Inscripcion, bool>> expression)
+        public List<Inscripciones> GetInscripcions(Expression<Func<Inscripciones, bool>> expression)
         {
-            List<Inscripcion> lista;
+            List<Inscripciones> lista;
             Contexto db = new Contexto();
-            lista = db.inscripcions.Where(expression).ToList();
+            lista = db.inscripciones.Where(expression).ToList();
             return lista;
         }
     }

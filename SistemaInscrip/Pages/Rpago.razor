@@ -1,6 +1,118 @@
 ﻿@page "/Pago"
+@using SistemaInscrip.Models
+@using SistemaInscrip.Controllers
 <h3>Rpago</h3>
+
+<EditForm Model="@pago" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+
+
+    <div class=" form-group">
+        <label for=" PagoId">Id</label>
+        <InputNumber @bind-Value="pago.PagoId"></InputNumber>
+        <button type="button" class=" btn-primary " @onclick="Buscar">Buscar</button>
+        <ValidationMessage For="@(()=>pago.InscripcionId)" />
+
+    </div>
+    <div class="form-group">
+        <label for=" Monto">Monto</label>
+        <InputNumber @bind-Value="pago.Monto" class="form-group" />
+        <ValidationMessage For="@(()=>pago.Monto)" />
+    </div>
+
+
+    <div class="form-group">
+        <label for=" Fecha">Fecha</label>
+        <InputDate @bind-Value="pago.Fecha" class="form-group"></InputDate>
+        <ValidationMessage For="@(()=>pago.Fecha)" />
+    </div>
+
+    <div class="form-group">
+        <label for="InscripcionId">InscripcionId</label>
+        <InputNumber @bind-Value="pago.InscripcionId" class="form-group"></InputNumber>
+        <ValidationMessage For="@(()=>pago.InscripcionId)" />
+    </div>
+
+
+
+    <div class="form-group">
+
+        <button type="submit" class="btn btn-primary"> Guardar</button>
+        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+        <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
+    </div>
+
+    <h5>@Mensaje</h5>
+
+
+
+
+</EditForm>
+
 
 @code {
 
+    public Pago pago = new Pago();
+    public string Mensaje;
+
+    public void Guardar()
+    {
+        PagoControllers pagoControllers = new PagoControllers();
+        if (pagoControllers.Guardar(pago)){
+            this.pago = new Pago();
+            Mensaje = "Inscripcion Guardad";
+
+        }
+        else
+        {
+            this.pago = new Pago();
+            Mensaje = "error Guardad";
+        }
+    }
+    public void Limpiar()
+    {
+        this.pago = new Pago();
+    }
+
+    public void Buscar()
+    {
+     PagoControllers pagoControllers = new PagoControllers();
+
+        var pagos = pagoControllers.Buscar(pago.PagoId);
+
+
+        if (pago != null)
+        {
+            pago = pagos;
+            Mensaje = "inscripcion encontrada";
+        }
+        else
+        {
+            this.pago = new Pago();
+            Mensaje = "Error";
+        }
+
+
+
+    }
+    public void Eliminar()
+    {
+         PagoControllers pagoControllers = new PagoControllers();
+
+        var pagos = pagoControllers.Eliminar(pago.PagoId);
+        if (pagos != null)
+        {
+            if (pagoControllers.Eliminar(pago.PagoId))
+            {
+                this.pago = new Pago();
+                Mensaje = "inscripcionEliminada";
+            }
+            else
+            {
+                this.pago = new Pago();
+                Mensaje = "Error";
+            }
+        }
+
+    }
 }

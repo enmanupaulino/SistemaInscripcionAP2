@@ -12,9 +12,13 @@ namespace SistemaInscrip.Models
 
         [Key]
         public int AsignaturaId { get; set; }
+        [Required(ErrorMessage = "Debe de haber un Codigo")]
         public int Codigo { get; set; }
+        [Required(ErrorMessage = "Debe de haber una Descripcion")]
         public string Descripcion { get; set; }
+        [Required(ErrorMessage = "Debe de haber un Prerequisito")]
         public string Prerequisito { get; set; }
+        [Required(ErrorMessage = "Debe de haber una cantidad de credito")]
         public int Creditos  { get; set; }
 
         public Asignaturas()

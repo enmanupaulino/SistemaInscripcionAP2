@@ -1,7 +1,123 @@
 ﻿
-@page "/Estudiante"  
+@page "/Estudiante"
+@using SistemaInscrip.Models
+@using SistemaInscrip.Controllers
 <h3>Restudiante</h3>
+
+<EditForm Model="@estudiantes" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+
+
+    <div class=" form-group">
+        <label for=" EstudianteId">Id</label>
+        <InputNumber @bind-Value="estudiantes.EstudianteId"></InputNumber>
+        <button type="button" class=" btn-primary " @onclick="Buscar">Buscar</button>
+        <ValidationMessage For="@(()=>estudiantes.EstudianteId)" />
+
+    </div>
+    <div class="form-group">
+        <label for=" Matricula">Matricula</label>
+        <InputNumber @bind-Value="estudiantes.Matricula" class="form-group" />
+        <ValidationMessage For="@(()=>estudiantes.Matricula)" />
+    </div>
+
+
+    <div class="form-group">
+        <label for=" Nombre">Nombres</label>
+        <InputText @bind-Value="estudiantes.Nombres" class="form-group"></InputText>
+        <ValidationMessage For="@(()=>estudiantes.Nombres)" />
+    </div>
+
+    <div class="form-group">
+        <label for="Balance">Balance</label>
+        <InputNumber @bind-Value="estudiantes.Balance" class="form-group"></InputNumber>
+        <ValidationMessage For="@(()=>estudiantes.Balance)" />
+    </div>
+
+
+
+    <div class="form-group">
+
+        <button type="submit" class="btn btn-primary"> Guardar</button>
+        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+        <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
+    </div>
+
+    <h5>@Mensaje</h5>
+
+
+
+
+</EditForm>
+
+
+
 
 @code {
 
+    public Estudiantes estudiantes = new Estudiantes();
+
+    public string Mensaje;
+
+    public void Guardar()
+    {
+        EstudianteControllers estudianteControllers = new EstudianteControllers();
+        if (estudianteControllers.Guardar(estudiantes))
+        {
+            this.estudiantes = new Estudiantes();
+            Mensaje = "Guardado";
+        }else
+        {
+            this.estudiantes = new Estudiantes();
+            Mensaje = "Error";
+
+        }
+
+    }
+    public void Limpiar()
+    {
+        this.estudiantes = new Estudiantes();
+    }
+
+    public void Buscar()
+    {
+        EstudianteControllers estudianteControllers = new EstudianteControllers();
+        var estudiante = estudianteControllers.Buscar(estudiantes.EstudianteId);
+
+
+
+        if (estudiante != null)
+        {
+            estudiantes = estudiante;
+            Mensaje = "estudiante encontrada";
+        }
+        else
+        {
+            this.estudiantes = new Estudiantes();
+            Mensaje = "error";
+        }
+    }
+
+    public void Eliminar()
+    {
+        EstudianteControllers estudianteControllers = new EstudianteControllers();
+
+
+        var estudiante = estudianteControllers.Buscar(estudiantes.EstudianteId);
+        if(estudiantes != null)
+        {
+            if (estudianteControllers.Eliminar(estudiante.EstudianteId))
+            {
+                this.estudiantes = new Estudiantes();
+                Mensaje = "encotrado";
+            }
+            else
+            {
+                this.estudiantes = new Estudiantes();
+                Mensaje = "encotrado";
+            }
+        }
+
+
+    }
 }

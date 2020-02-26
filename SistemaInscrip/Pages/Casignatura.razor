@@ -1,8 +1,40 @@
 ﻿@page    "/ConAsignatura"
+@using SistemaInscrip.Controllers
+@using SistemaInscrip.Models
 
 <h3>Casignatura</h3>
+<table class=" table">
+    <thead>
+        <tr>
+            <th>AsignauraId</th>
+            <th>Codigo</th>
+            <th>Descripcion</th>
+            <th>Prerequisitos</th>
+            <th>Credito</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in lista)
+        {
+            <tr>
+                <th>@item.AsignaturaId</th>
+                <th>@item.Codigo.</th>
+                <th>@item.Descripcion</th>
+                <th>@item.Prerequisito</th>
+                <th>@item.Creditos</th>
+                   
+            </tr>
+        }
+    </tbody>
+</table>
 
 @code {
 
+    public List<Asignaturas> lista;
+    protected override void OnInitialized()
+    {
+        AsignaturaControllers asignaturaControllers = new AsignaturaControllers();
+        lista = asignaturaControllers.GetAsignaturas(e => true);
+    }
 
 }

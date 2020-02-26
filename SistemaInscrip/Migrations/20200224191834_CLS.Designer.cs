@@ -9,8 +9,8 @@ using SistemaInscrip.Data;
 namespace SistemaInscrip.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200223041439_initial")]
-    partial class initial
+    [Migration("20200224191834_CLS")]
+    partial class CLS
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -59,6 +59,41 @@ namespace SistemaInscrip.Migrations
                     b.HasKey("EstudianteId");
 
                     b.ToTable("estudiantes");
+                });
+
+            modelBuilder.Entity("SistemaInscrip.Models.Inscripciones", b =>
+                {
+                    b.Property<int>("InscripcionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Balance")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Disponible")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("EstudianteId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Limite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Monto")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Semestre")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Tomado")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("InscripcionId");
+
+                    b.ToTable("inscripciones");
                 });
 
             modelBuilder.Entity("SistemaInscrip.Models.Pago", b =>
