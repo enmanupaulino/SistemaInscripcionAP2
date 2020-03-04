@@ -16,11 +16,12 @@
     <tbody>
            @foreach (var item in lista)
            {<tr>
-         <th>@item.PagoId</th>
-         <th>@item.Fecha</th>
-         <th>@item.InscripcionId</th>
-          <th>@item.Monto</th>
-        </tr>
+    <th>@item.PagoId</th>
+    <th>@item.Fecha</th>
+    <th>@item.InscripcionId</th>
+    <th>@item.Monto</th>
+    <td><a class=" btn btn-dark" href="asignatura/@item.PagoId"> Ver</a></td>
+</tr>
              }
     </tbody>
 </table>

@@ -16,12 +16,13 @@
     <tbody>
         @foreach(var item in lista)
         {
-            <tr>
-                <th>@item.EstudianteId</th>
-                <th>@item.Nombres</th>
-                <th>@item.Matricula</th>
-                <th>@item.Balance</th>
-            </tr>
+        <tr>
+            <th>@item.EstudianteId</th>
+            <th>@item.Nombres</th>
+            <th>@item.Matricula</th>
+            <th>@item.Balance</th>
+            <td><a class=" btn btn-dark" href="asignatura/@item.EstudianteId"> Ver</a></td>
+        </tr>
         }
 
     </tbody>

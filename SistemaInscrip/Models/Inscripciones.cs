@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,6 +27,8 @@ namespace SistemaInscrip.Models
         [Required(ErrorMessage = "Debe de un Id")]
         public int EstudianteId { get; set; }
 
+        [ForeignKey("InscripcionId")]
+        public virtual List<InscripcionDetalle> Detalle { get; set; }
         public Inscripciones()
         {
             InscripcionId = 0;
@@ -37,6 +40,7 @@ namespace SistemaInscrip.Models
             Balance = 0;
             Monto = 0;
             EstudianteId = 0;
+            Detalle = new List<InscripcionDetalle>();
         }
     }
 }

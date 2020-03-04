@@ -1,4 +1,4 @@
-﻿@page "/Asignatura"
+﻿@page "/Asignatura/{CurrentId:int}"
 @using SistemaInscrip.Models
 @using SistemaInscrip.Controllers
 <h3>Rasignatura</h3>
@@ -56,6 +56,17 @@
 @code {
     public Asignaturas asignaturas = new Asignaturas();
     public string Mensaje { get; set; }
+
+    [Parameter]
+    public int CurrentId { get; set; }
+    protected override void OnInitialized()
+    {
+        AsignaturaControllers asignaturaControllers = new AsignaturaControllers();
+        if (CurrentId != 0)
+        {
+            asignaturas = asignaturaControllers.Buscar(CurrentId);
+        }
+    }
 
     public void Guardar()
     {

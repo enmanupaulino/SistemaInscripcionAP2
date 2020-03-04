@@ -1,4 +1,5 @@
-﻿using SistemaInscrip.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SistemaInscrip.Data;
 using SistemaInscrip.Models;
 using System;
 using System.Collections.Generic;
@@ -26,24 +27,65 @@ namespace SistemaInscrip.Controllers
       public bool Insertar(Inscripciones inscripciones)
         {
             Contexto db = new Contexto();
+            EstudianteControllers estudianteControllers = new EstudianteControllers();
             bool paso = false;
+            try
+            {
+                Estudiantes estudiantes = estudianteControllers.Buscar(inscripciones.EstudianteId);
 
-            db.inscripciones.Add(inscripciones);
-            paso = db.SaveChanges() > 0;
-
+                estudiantes.Balance += inscripciones.Balance;
+                estudianteControllers.Modificar(estudiantes);
+                db.inscripciones.Add(inscripciones);
+                paso = db.SaveChanges() > 0;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
             return paso;
 
         }
-        public bool Modificar(Inscripciones inscripcion)
+        public bool Modificar(Inscripciones inscripciones)
         {
             bool paso = false;
             Contexto db = new Contexto();
+            EstudianteControllers controller = new EstudianteControllers();
+            try
+            {
+                var anterior = Buscar(inscripciones.InscripcionId);
 
-            db.inscripciones.Add(inscripcion);
-            db.Entry(inscripcion).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            paso = db.SaveChanges() > 0;
+                foreach (var asignatura in inscripciones.Detalle)
+                {
+                    if (asignatura.Id == 0)
+                    {
+                        db.Entry(asignatura).State = EntityState.Added;
+                    }
 
+                }
+
+                foreach (var asignatura in anterior.Detalle)
+                {
+                    if (!inscripciones.Detalle.Any(A => A.AsignaturaId == asignatura.AsignaturaId))
+                    {
+                        db.Entry(asignatura).State = EntityState.Deleted;
+                    }
+                }
+
+                Estudiantes tempEstudiante = controller.Buscar(inscripciones.EstudianteId);
+                Inscripciones inscripcion = Buscar(inscripciones.InscripcionId);
+
+                decimal nuevoBalance = tempEstudiante.Balance -= inscripcion.Balance;
+                tempEstudiante.Balance = nuevoBalance + inscripciones.Balance;
+                controller.Modificar(tempEstudiante);
+                db.inscripciones.Add(inscripcion);
+                db.Entry(inscripcion).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                paso = db.SaveChanges() > 0;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
             return paso;
         }
@@ -52,10 +94,32 @@ namespace SistemaInscrip.Controllers
             bool paso = false;
             Contexto db = new Contexto();
             Inscripciones inscripcion = new Inscripciones();
-            inscripcion = db.inscripciones.Find(Id);
-            db.Entry(inscripcion).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
-            paso = db.SaveChanges() > 0;
+            EstudianteControllers controller = new EstudianteControllers();
+            try
+            {
+                
+                
+                inscripcion = db.inscripciones.Find(Id);
+                if (inscripcion != null)
+                {
+                    Estudiantes tempEstudiante = controller.Buscar(inscripcion.EstudianteId);
+                    tempEstudiante.Balance -= inscripcion.Balance;
+                    controller.Modificar(tempEstudiante);
 
+                    db.Entry(inscripcion).State = EntityState.Deleted;
+                    paso = db.SaveChanges() > 0;
+                }else
+                {
+                    paso = false;
+                }
+               
+                
+              
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
             return paso;
         }
@@ -63,9 +127,14 @@ namespace SistemaInscrip.Controllers
         {
             Contexto db = new Contexto();
             Inscripciones inscripcion = new Inscripciones();
-
-            inscripcion = db.inscripciones.Find(Id);
-
+            try
+            {
+                inscripcion = db.inscripciones.Where(i => i.InscripcionId ==  Id).Include(a => a.Detalle).FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
             return inscripcion;
         }
         public List<Inscripciones> GetInscripcions(Expression<Func<Inscripciones, bool>> expression)

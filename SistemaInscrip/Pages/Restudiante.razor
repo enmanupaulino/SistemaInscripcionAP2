@@ -1,5 +1,5 @@
 ﻿
-@page "/Estudiante"
+@page "/Estudiante/{CurrentId:int}"
 @using SistemaInscrip.Models
 @using SistemaInscrip.Controllers
 <h3>Restudiante</h3>
@@ -58,6 +58,16 @@
     public Estudiantes estudiantes = new Estudiantes();
 
     public string Mensaje;
+    [Parameter]
+    public int CurrentId { get; set; }
+    protected override void OnInitialized()
+    {
+        EstudianteControllers estudianteControllers = new EstudianteControllers();
+        if (CurrentId != 0)
+        {
+            estudiantes = estudianteControllers.Buscar(CurrentId);
+        }
+    }
 
     public void Guardar()
     {
